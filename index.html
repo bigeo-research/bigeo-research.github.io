@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiGeo — Supplementary Material</title>
+<style>
+  :root {
+    --bg: #f4f3ef;
+    --card: #ffffff;
+    --ink: #1c1c1c;
+    --muted: #6b6b6b;
+    --accent: #2456c4;
+    --line: #e3e1da;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+  header { text-align: center; padding: 72px 0 8px; }
+  header h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.5px; }
+  header .sub { color: var(--muted); font-size: 17px; margin-top: 10px; }
+  header .badge {
+    display: inline-block; margin-top: 16px; padding: 5px 14px;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: var(--card); color: var(--muted); font-size: 13px;
+  }
+  header .links { margin-top: 18px; }
+  header .links a {
+    display: inline-block; padding: 8px 22px; margin: 0 5px;
+    border: 1px solid var(--ink); border-radius: 999px;
+    background: var(--ink); color: #fff; font-size: 14.5px; font-weight: 600;
+  }
+  header .links a:hover { opacity: 0.85; text-decoration: none; }
+  section { margin-top: 64px; }
+  h2 { font-size: 27px; font-weight: 750; letter-spacing: -0.3px; }
+  h2 + .lead { color: var(--muted); margin-top: 6px; font-size: 15.5px; max-width: 860px; }
+  h3 { font-size: 19px; font-weight: 700; margin-top: 34px; }
+  h3 + .desc { color: var(--muted); font-size: 14.5px; margin-top: 2px; max-width: 860px; }
+  .hero { margin-top: 22px; }
+  .hero video {
+    width: 100%; border-radius: 14px; display: block;
+    background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+  }
+  .grid { display: grid; gap: 18px; margin-top: 16px;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .grid.sim { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .card video { width: 100%; display: block; aspect-ratio: 16/9; background: #dcdad4; object-fit: cover; }
+  .card.sim video { aspect-ratio: 4/3; }
+  .card .cap { padding: 9px 13px 11px; font-size: 13.5px; color: var(--ink); }
+  .card .cap b { font-size: 14px; }
+  .card .cap .sub2 { color: var(--muted); display: block; font-size: 12.5px; margin-top: 1px; }
+  .note {
+    margin-top: 18px; padding: 14px 18px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 10px;
+    color: var(--muted); font-size: 14px;
+  }
+  /* --- code browser (GitHub-style) --- */
+  .codebox {
+    margin-top: 22px; border: 1px solid #d0d7de; border-radius: 8px;
+    overflow: hidden; background: #fff;
+  }
+  .cb-head {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 10px 16px; background: #f6f8fa; border-bottom: 1px solid #d0d7de;
+    font-size: 14px; color: #1f2328;
+  }
+  .cb-head svg { flex: none; }
+  .cb-head b { font-weight: 600; color: #0969da; }
+  .cb-head .pill {
+    font-size: 12px; color: #57606a; border: 1px solid #d0d7de;
+    border-radius: 999px; padding: 1px 9px; font-weight: 500;
+  }
+  .cb-head .spacer { flex: 1; }
+  .cb-head .meta { font-size: 12.5px; color: #57606a; }
+  .cb-head a.repo { font-size: 13px; color: #0969da; font-weight: 500; }
+  .cb-body { display: grid; grid-template-columns: 280px 1fr; height: 640px; }
+  .codetree {
+    overflow: auto; border-right: 1px solid #d0d7de; padding: 8px;
+    background: #fff; font-size: 13.5px; color: #1f2328;
+  }
+  .codetree .row {
+    display: flex; align-items: center; gap: 7px; cursor: pointer;
+    padding: 4px 8px; border-radius: 6px; white-space: nowrap; user-select: none;
+  }
+  .codetree .row:hover { background: #f3f4f6; }
+  .codetree .row svg { flex: none; }
+  .codetree .dir::before {
+    content: ""; flex: none; width: 0; height: 0; margin-right: -1px;
+    border-left: 5px solid #636c76; border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent; transition: transform .12s;
+  }
+  .codetree .dir.open::before { transform: rotate(90deg); }
+  .codetree .children { margin-left: 15px; border-left: 1px solid #d8dee4; padding-left: 4px; display: none; }
+  .codetree .dir.open + .children { display: block; }
+  .codetree .file.active { background: #ddf4ff; }
+  .codetree .file.active:hover { background: #ddf4ff; }
+  .codepane { overflow: auto; background: #fff; }
+  .codepane .path {
+    position: sticky; top: 0; z-index: 2; padding: 9px 16px;
+    background: #fff; border-bottom: 1px solid #d0d7de;
+    font: 12.5px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #57606a;
+  }
+  .codepane .path .seg { color: #0969da; }
+  .codepane .path .last { color: #1f2328; font-weight: 600; }
+  .codepane .path .info { float: right; color: #57606a; font-size: 12px; }
+  .codewrap { display: flex; align-items: flex-start; }
+  .codewrap pre { margin: 0; }
+  .gutter {
+    text-align: right; padding: 12px 10px 28px 16px; color: #8c959f;
+    user-select: none; font: 12px/20px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    min-width: 40px;
+  }
+  .srcpre { flex: 1; padding: 12px 20px 28px 10px; overflow: visible; }
+  .codepane code {
+    font: 12px/20px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: transparent; padding: 0;
+  }
+  @media (max-width: 760px) {
+    .cb-body { grid-template-columns: 1fr; height: auto; }
+    .codetree { max-height: 230px; border-right: none; border-bottom: 1px solid #d0d7de; }
+    .codepane { max-height: 500px; }
+  }
+  footer { margin-top: 80px; text-align: center; color: var(--muted); font-size: 13.5px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>BiGeo</h1>
+  <div class="sub">Supplementary Material — Real-Robot &amp; Simulation Rollouts</div>
+  <div class="badge">Anonymous submission · under double-anonymous review</div>
+  <div class="links"><a href="#code">&lt;/&gt;&nbsp; Code</a></div>
+</header>
+
+<section>
+  <h2>Supplementary Video</h2>
+  <p class="lead">All sequences are executed fully autonomously by the learned policy — no teleoperation is used at test time. Clips are re-timed to 1.5×–2× speed (no frames dropped); a green “✓ Success” marker is annotated post-hoc.</p>
+  <div class="hero">
+    <video controls preload="metadata" poster="assets/poster.jpg" playsinline>
+      <source src="BiGeo_supplementary_video.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<section>
+  <h2>Real-Robot Rollouts</h2>
+  <p class="lead">Individual episodes for each real-robot task. Click any clip to play. All clips are at 2× speed (Basket Stacking at 1.5×).</p>
+
+  <h3>Tube Mixing</h3>
+  <p class="desc">Long-horizon bimanual task: grasp, uncap, pour, and mix test tubes with coordinated dual-arm motions.</p>
+  <div class="grid">
+    <div class="card"><video controls preload="none" poster="assets/posters/MixTube_2x.jpg" playsinline><source src="real_robot/MixTube/MixTube_2x.mp4" type="video/mp4"></video><div class="cap">Full episode <span class="sub2">2× speed</span></div></div>
+  </div>
+
+  <h3>Basket Stacking</h3>
+  <p class="desc">Bimanual basket stacking requiring synchronized lifting and precise placement.</p>
+  <div class="grid">
+    <div class="card"><video controls preload="none" poster="assets/posters/StackBaskets_1.5x.jpg" playsinline><source src="real_robot/StackBaskets/StackBaskets_1.5x.mp4" type="video/mp4"></video><div class="cap">Full episode <span class="sub2">1.5× speed</span></div></div>
+  </div>
+
+  <h3>Pick-and-Place</h3>
+  <p class="desc">Grasp diverse objects and place them at the target; the policy uses the arm on the side where the object appears.</p>
+  <div class="grid">
+    <div class="card"><video controls preload="none" poster="assets/posters/PickAndPlace_detergent_left_2x.jpg" playsinline><source src="real_robot/PickAndPlace/PickAndPlace_detergent_left_2x.mp4" type="video/mp4"></video><div class="cap">Detergent — left arm</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/PickAndPlace_detergent_right_2x.jpg" playsinline><source src="real_robot/PickAndPlace/PickAndPlace_detergent_right_2x.mp4" type="video/mp4"></video><div class="cap">Detergent — right arm</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/PickAndPlace_duck_2x.jpg" playsinline><source src="real_robot/PickAndPlace/PickAndPlace_duck_2x.mp4" type="video/mp4"></video><div class="cap">Toy duck</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/PickAndPlace_battery_2x.jpg" playsinline><source src="real_robot/PickAndPlace/PickAndPlace_battery_2x.mp4" type="video/mp4"></video><div class="cap">Battery</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/PickAndPlace_bread_2x.jpg" playsinline><source src="real_robot/PickAndPlace/PickAndPlace_bread_2x.mp4" type="video/mp4"></video><div class="cap">Small bread</div></div>
+  </div>
+
+  <h3>Object Sorting</h3>
+  <p class="desc">Sort objects into baskets across varied scene layouts and object sets.</p>
+  <div class="grid">
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene1_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene1_2x.mp4" type="video/mp4"></video><div class="cap">Scene 1</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene2_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene2_2x.mp4" type="video/mp4"></video><div class="cap">Scene 2</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene3_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene3_2x.mp4" type="video/mp4"></video><div class="cap">Scene 3</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene4_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene4_2x.mp4" type="video/mp4"></video><div class="cap">Scene 4</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene5_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene5_2x.mp4" type="video/mp4"></video><div class="cap">Scene 5</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene6_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene6_2x.mp4" type="video/mp4"></video><div class="cap">Scene 6</div></div>
+    <div class="card"><video controls preload="none" poster="assets/posters/ObjectSort_scene7_2x.jpg" playsinline><source src="real_robot/ObjectSort/ObjectSort_scene7_2x.mp4" type="video/mp4"></video><div class="cap">Scene 7</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Simulation Rollouts — RoboTwin Benchmark</h2>
+  <p class="lead">BiGeo is evaluated on 12 bimanual manipulation tasks from the RoboTwin benchmark. Clips below play automatically as they scroll into view (real-time, 1× speed). For tasks executable by either arm, both left- and right-arm episodes are included in the repository.</p>
+
+  <div class="grid sim">
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/BlockHammerBeat_right.mp4" type="video/mp4"></video><div class="cap"><b>BlockHammerBeat</b><span class="sub2">Grasp the hammer and strike the block, using the arm on the block's side.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/BlockHandover_bimanual.mp4" type="video/mp4"></video><div class="cap"><b>BlockHandover</b><span class="sub2">Hand the block over from one arm to the other, then place it on the target pad.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/BlockStackTwo_right.mp4" type="video/mp4"></video><div class="cap"><b>BlockStackTwo</b><span class="sub2">Stack two cubes precisely at the target location.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/BlockStackThree_bimanual.mp4" type="video/mp4"></video><div class="cap"><b>BlockStackThree</b><span class="sub2">Long-horizon stacking of three cubes using both arms.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/ContainerPlace_1.mp4" type="video/mp4"></video><div class="cap"><b>ContainerPlace</b><span class="sub2">Pick up the container and place it onto the target plate.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/DiverseBottlesPick_bimanual_1.mp4" type="video/mp4"></video><div class="cap"><b>DiverseBottlesPick</b><span class="sub2">Both arms simultaneously lift two bottles of diverse shapes to target poses.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/DualShoesPlace_bimanual_1.mp4" type="video/mp4"></video><div class="cap"><b>DualShoesPlace</b><span class="sub2">Place a pair of shoes side by side, one per arm, with correct orientation.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/EmptyCupPlace_right.mp4" type="video/mp4"></video><div class="cap"><b>EmptyCupPlace</b><span class="sub2">Pick the empty cup and set it down steadily on the coaster.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/PickAppleMessy_right.mp4" type="video/mp4"></video><div class="cap"><b>PickAppleMessy</b><span class="sub2">Pick the apple out of a cluttered scene with distractors.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/PutAppleCabinet_bimanual.mp4" type="video/mp4"></video><div class="cap"><b>PutAppleCabinet</b><span class="sub2">One arm opens the cabinet while the other places the apple inside.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/ShoePlace_right.mp4" type="video/mp4"></video><div class="cap"><b>ShoePlace</b><span class="sub2">Place a single shoe on the target mat with the correct heading.</span></div></div>
+    <div class="card sim"><video muted loop playsinline preload="none" class="autoplay"><source src="simulation/ToolAdjust_1.mp4" type="video/mp4"></video><div class="cap"><b>ToolAdjust</b><span class="sub2">Grasp the tool and adjust it to the required pose.</span></div></div>
+  </div>
+
+  <div class="note">Every trial shown on this page is closed-loop policy execution. Success markers in the supplementary video are annotated post-hoc for readability only. This page contains no author- or institution-identifying information.</div>
+</section>
+
+<section id="code">
+  <h2>Code</h2>
+  <p class="lead">Inference code of BiGeo, browsable directly below (55 files). Also available as an anonymous repository: <a href="https://github.com/bigeo-research/BiGeo-Code" target="_blank" rel="noopener">github.com/bigeo-research/BiGeo-Code</a>.</p>
+  <div class="codebox">
+    <div class="cb-head">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="#57606a"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
+      <b>BiGeo-Code</b>
+      <span class="pill">Public · anonymous</span>
+      <span class="spacer"></span>
+      <span class="meta" id="cbmeta"></span>
+      <a class="repo" href="https://github.com/bigeo-research/BiGeo-Code" target="_blank" rel="noopener">Open repository ↗</a>
+    </div>
+    <div class="cb-body">
+      <div class="codetree" id="codetree"></div>
+      <div class="codepane">
+        <div class="path" id="codepath">README.md</div>
+        <div class="codewrap"><pre class="gutter" id="gutter"></pre><pre class="srcpre"><code id="codeview">Loading…</code></pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>BiGeo — Supplementary Material · Anonymous submission</footer>
+</div>
+
+<script>
+  // Autoplay simulation clips only while visible (saves bandwidth, keeps page smooth)
+  const vids = document.querySelectorAll('video.autoplay');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting) { v.play().catch(() => {}); }
+      else { v.pause(); }
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(v => io.observe(v));
+
+  // --- code browser ---
+  const LANGS = { py: 'python', yaml: 'yaml', yml: 'yaml', sh: 'bash', md: 'markdown',
+                  urdf: 'xml', xml: 'xml', txt: 'plaintext', json: 'json' };
+  const treeEl = document.getElementById('codetree');
+  const viewEl = document.getElementById('codeview');
+  const pathEl = document.getElementById('codepath');
+  let activeEl = null;
+
+  function buildTree(paths) {
+    const root = {};
+    paths.forEach(p => {
+      let node = root;
+      p.split('/').forEach((part, i, arr) => {
+        if (i === arr.length - 1) { (node.__files = node.__files || []).push(p); }
+        else { node = node[part] = node[part] || {}; }
+      });
+    });
+    return root;
+  }
+
+  const ICON_DIR = '<svg width="16" height="16" viewBox="0 0 16 16" fill="#54aeff"><path d="M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2A1.75 1.75 0 0 0 5 1H1.75Z"/></svg>';
+  const ICON_FILE = '<svg width="16" height="16" viewBox="0 0 16 16" fill="#636c76"><path d="M2 1.75C2 .784 2.784 0 3.75 0h6.586c.464 0 .909.184 1.237.513l2.914 2.914c.329.328.513.773.513 1.237v9.586A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.062V4.25c0 .138.112.25.25.25h2.688l-.011-.013-2.914-2.914Z"/></svg>';
+  const gutterEl = document.getElementById('gutter');
+
+  function makeRow(cls, icon, label) {
+    const el = document.createElement('div');
+    el.className = 'row ' + cls;
+    el.insertAdjacentHTML('beforeend', icon);
+    const span = document.createElement('span');
+    span.textContent = label;
+    el.appendChild(span);
+    return el;
+  }
+
+  function renderTree(node, container, openDepth) {
+    Object.keys(node).filter(k => k !== '__files').sort().forEach(k => {
+      const dir = makeRow('dir' + (openDepth > 0 ? ' open' : ''), ICON_DIR, k);
+      dir.onclick = () => dir.classList.toggle('open');
+      const children = document.createElement('div');
+      children.className = 'children';
+      renderTree(node[k], children, openDepth - 1);
+      container.appendChild(dir); container.appendChild(children);
+    });
+    (node.__files || []).sort().forEach(p => {
+      const f = makeRow('file', ICON_FILE, p.split('/').pop());
+      f.onclick = () => loadFile(p, f);
+      f.dataset.path = p;
+      container.appendChild(f);
+    });
+  }
+
+  let FILES = {};
+
+  function loadFile(p, el) {
+    if (activeEl) activeEl.classList.remove('active');
+    if (el) { el.classList.add('active'); activeEl = el; }
+    const text = FILES[p] ?? 'Failed to load ' + p;
+    const lines = text.split('\n');
+    const nLines = lines[lines.length - 1] === '' ? lines.length - 1 : lines.length;
+    // breadcrumb path
+    pathEl.textContent = '';
+    p.split('/').forEach((seg, i, arr) => {
+      const s = document.createElement('span');
+      s.className = i === arr.length - 1 ? 'last' : 'seg';
+      s.textContent = seg;
+      pathEl.appendChild(s);
+      if (i < arr.length - 1) pathEl.appendChild(document.createTextNode(' / '));
+    });
+    const info = document.createElement('span');
+    info.className = 'info';
+    info.textContent = nLines + ' lines';
+    pathEl.appendChild(info);
+    // line numbers + source
+    gutterEl.textContent = Array.from({ length: nLines }, (_, i) => i + 1).join('\n');
+    const ext = p.split('.').pop().toLowerCase();
+    viewEl.textContent = text;
+    viewEl.className = 'language-' + (LANGS[ext] || 'plaintext');
+    if (window.hljs) hljs.highlightElement(viewEl);
+    document.querySelector('.codepane').scrollTop = 0;
+  }
+
+  fetch('code_files.json').then(r => r.json()).then(bundle => {
+    FILES = bundle;
+    document.getElementById('cbmeta').textContent = Object.keys(bundle).length + ' files';
+    renderTree(buildTree(Object.keys(bundle)), treeEl, 1);
+    const readme = treeEl.querySelector('[data-path="README.md"]');
+    loadFile('README.md', readme);
+  });
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+        onload="if(activeEl)loadFile(activeEl.dataset.path,activeEl)"></script>
+</body>
+</html>
